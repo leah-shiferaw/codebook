@@ -1,0 +1,114 @@
+library(tidyverse)
+library(haven)
+library(knitr)
+library(readxl)
+library(dplyr)
+
+
+
+df = read_excel('pitf_atrocities.xls') 
+
+
+df2 = df |>
+  select(
+    Country,
+    Event_Type,
+    Start_Day,
+    Start_Month,
+    Start_Year,
+    End_Day,
+    End_Month,
+    End_Year,
+    Deaths_Number,
+    Injured_Number,
+    Weapons,
+    Victim_Identity_Po,
+    Victim_Identity_ENC,
+    Victim_Identity_Rel,
+    Victim_Identity_SE,
+    Organization_of_Violence,
+    Description,
+    Primary_Source 
+  )
+
+
+
+df3 = df2 |>
+  mutate(
+    Start_Month = case_when(
+      Start_Month == 1 ~ "JAN",
+      Start_Month == 2 ~ "FEB",
+      Start_Month == 3 ~ "MAR",
+      Start_Month == 4 ~ "APR",
+      Start_Month == 5 ~ "MAY",
+      Start_Month == 6 ~ "JUN",
+      Start_Month == 7 ~ "JUL",
+      Start_Month == 8 ~ "AUG",
+      Start_Month == 9 ~ "SEP",
+      Start_Month == 10 ~ "OCT",
+      Start_Month == 11 ~ "NOV",
+      Start_Month == 12 ~ "DEC"
+    )
+  )
+
+
+df4 = df3 |>
+  mutate(
+    End_Month = case_when(
+      End_Month == 1 ~ "JAN",
+      End_Month == 2 ~ "FEB",
+      End_Month == 3 ~ "MAR",
+      End_Month == 4 ~ "APR",
+      End_Month == 5 ~ "MAY",
+      End_Month == 6 ~ "JUN",
+      End_Month == 7 ~ "JUL",
+      End_Month == 8 ~ "AUG",
+      End_Month == 9 ~ "SEP",
+      End_Month == 10 ~ "OCT",
+      End_Month == 11 ~ "NOV",
+      End_Month == 12 ~ "DEC"
+    )
+  )
+
+df4 = mutate(df4,
+              Start_Day = na_if(Start_Day, 99),
+              Start_Month = na_if(Start_Month, 99),
+              Start_Year = na_if(Start_Year, 99),
+              End_Day = na_if(End_Day, 99),
+              End_Month = na_if(End_Month, 99),
+              End_Year = na_if(End_Year, 99))
+
+df5 = df4 |>
+  mutate(Deaths_Number = case_when(
+    Deaths_Number %in% c("dozens", "A Number Of", "scores",
+                         "several", "Several", "hundreds", "many", 
+                         "Many") ~ NA_character_,
+    TRUE ~ Deaths_Number
+  ))
+
+df5 = df4 |>
+  mutate(Injured_Number = case_when(
+    Injured_Number %in% c("dozens", "A Number Of", "scores",
+                          "several", "Several", "hundreds", "many", 
+                          "Many") ~ NA_character_,
+    TRUE ~ Injured_Number
+  ))
+
+
+df6 = df5 |>
+  mutate(Primary_Source = case_when(
+    Primary_Source == "Reuters News" ~ "Reuters",
+    Primary_Source == "Associated Press Newswires" ~ "Associated Press",
+    Primary_Source == "The Associated Press" ~ "Associated Press",
+    Primary_Source == "AP" ~ "Associated Press",
+    Primary_Source == "AFP" ~ "Agence France Presses"
+  ))
+
+
+# the end ----
+
+df7 = df6 |>
+  rename(Event = Event_Type, Deaths = Deaths_Number,
+         Injured = Injured_Number, Method = Organization_of_Violence)
+
+write.csv(df7, "pitf.csv")
