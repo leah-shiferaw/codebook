@@ -1,0 +1,248 @@
+---
+title: "Codebook"
+author: "Leah Shiferaw"
+date: "2024-02-27"
+output: pdf_document
+
+---
+
+```{r setup, include=FALSE}
+  knitr::opts_chunk$set(
+    echo = FALSE, 
+    eval = FALSE
+  )
+
+library(tidyverse)
+library(knitr)
+
+getwd()
+setwd("/Users/Leah/Documents/AU SIS/SIS 750 Data Analysis/codebook")
+pitf1 = read.csv('pitf.csv')
+
+```
+
+
+
+Overview of project:
+
+The goal of the Political Instability Task Force (PITF) is to create a dataset that can be used to understand worldwide atrocities. The project was created by Philip Schrodt and Jay Ulfelder from the University of Kansas in order to develop quantitative and statistical modeling to understand what countries may be more prone to atrocities. The data collected information from atrocities from 1995 to 2012 from around the world. It contains information regarding the country in which the atrocity occurred, when the atrocity started and stopped, who the victims and perpetrators were, a description of the event, and more. 
+
+The project is funded by the Central Intelligence Agency, but does not reflect the views of the U.S Government. 
+
+
+
+Methodology:
+
+The project collected information about atrocities from news sources such as Reuters, CNN, the New York Times, and the Associated Press and by using key search strings. Data are updated monthly. 
+
+
+
+Variables:
+
+Event Type
+
+
+Name: Event
+
+Variable Type: character
+
+Description: Atrocities are categorized into two groups: campaigns or incidents. Campaigns are atrocities that are committed over multiple days, while incidents are atrocities that have been committed over a 24 hour period.
+
+
+
+```{r}
+
+pitf1 = pitf |>
+  summary(Event)
+ 
+```
+
+
+
+
+Country
+
+Name: Country
+Variable Type: Character
+Description: Country in which the atrocity occurred. The name of the country is shortened to a three letter abbreviation.
+
+
+
+
+Start Day
+
+Name: Start_Day
+Variable Type: Numeric
+Description: The day of the month in which the violence started. 
+
+
+
+
+```{r}
+
+summary("Start_Day")
+kable("Start_Day")
+
+```
+
+
+Month
+
+Name: Start_Month
+Variable Type: Factor
+Description: The month in which the violence started.
+
+
+
+Year
+
+Name: Start_Year
+Variable Type: Numeric 
+Description: The year in which the violence started.
+
+
+
+```{r}
+
+summary("Start_Month")
+kable("Start_Month")
+
+```
+
+
+End Day
+
+Name: End_Day
+Variable Type: Numeric
+Description: The day of the month where the violence ended.
+
+
+
+```{r}
+
+frequency("Start_Month")
+kable("Start_Month")
+
+```
+
+
+End Month
+
+Name: End_Month
+Variable Type: Factor
+Description: The month where the violence ended.
+
+
+
+
+```{r}
+
+freq("End_Month")
+kable("End_Month")
+
+```
+
+
+
+End Year
+
+Name: End_Year
+Variable Type: Numeric
+Description: The year in which the atrocity ended.
+
+
+
+
+```{r}
+
+summary()
+```
+
+
+Types of weapons used
+
+Name: Weapons
+Variable Type: Factor
+Description: The type of weapon used to commit the atrocity. The weapons are listed in ascending order of lethality: Primitive Weapons, Firearms, Explosives, Suicide Bombing, Heavy Weapons, WMDs, Unclear/Other
+
+
+```{r}
+
+frequency("Weapons")
+kable("Weapons")
+```
+
+
+
+Number of Deaths
+
+Name: Deaths
+Variable Type: Numeric
+Description: Number of deaths in the atrocity that occurred.
+
+
+
+Number of Injured
+Name: Injured
+Variable Type: Numeric 
+Description: The number of people injured in the atrocity.
+
+
+
+Victim Identity
+
+Name: Victim_Identity_Pol
+Variable Type: Character
+Description: Whether the victim was a member of a political party or 
+organization.
+
+
+
+Name: Victim_Identity_ENC
+Variable Type: Character
+Description: Whether the victim was a part of an ethnic, national, or citizenship group. 
+
+
+
+Name: Victim_Identity_Soc
+Variable Type: Character
+Description: Whether the victim was a part of a socio-economic group
+
+
+
+Name: Victim_Identity_Rel
+Variable Type: Character
+Description: Whether the victim was a religious figure or part of a religious group.
+
+
+
+Type of violence
+Name: Method
+Variable Type: Factor
+Description: The method in which the violence was carried out. The types of violence are divided into the following categories: Attack/Massacre, Riot/Pogrom, Protest, Clash, or Other.
+
+
+
+Event Description
+
+Name: Description
+Variable Type: Character
+Description: Description of the atrocity.
+
+
+
+Sources
+Name: Primary_Source
+Variable Type: Factor? 
+Description: The primary source(s) where the researchers received information on the atrocity. The primary sources used in this project were: Reuters, Agence-France Presse, Associated Press, Christian Science Monitor, New York Times, and the International Court for the Former Yugoslavia. 
+
+
+
+```{r}
+
+table("Primary_Source")
+kable("Primary_Source")
+
+```
+
+
